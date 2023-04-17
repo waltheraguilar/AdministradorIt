@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "666909682385",
+    "project_id": "adminitradorit",
+    "storage_bucket": "adminitradorit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:666909682385:android:92e3b1271ff5763ce033f0",
+        "android_client_info": {
+          "package_name": "com.example.itadministrador"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "666909682385-s5i7ge0prffnlgjmhjrv5adjk1vrmsnv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWkgffh7KhxzqMzIZNx_trb5kj5aExwcQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "666909682385-s5i7ge0prffnlgjmhjrv5adjk1vrmsnv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
