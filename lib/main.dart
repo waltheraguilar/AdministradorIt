@@ -52,6 +52,9 @@ void main() {
       routes: {
         '/login/':(context)=>const LoginView(),
         '/register/':(context)=>const RegisterView(),
+        '/notas/':(context) => const VistaNotas(),
+
+
 
       },
     ),
