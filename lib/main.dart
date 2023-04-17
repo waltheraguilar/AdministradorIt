@@ -44,7 +44,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Administrador IT',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -73,18 +73,93 @@ class HomePage extends StatelessWidget {
              final user = FirebaseAuth.instance.currentUser;
              if(user != null){
                 if (user.emailVerified) {
-                print("El Email Esta Verificado");
+                return const VistaNotas();
                 }else{
+                       
                  return const VerifyEmailView();
+           
                 }
              }else{
                    return const LoginView();
              }
-             return const Text("Done");
+            
             default:
               return const CircularProgressIndicator();
           }
         },
       );
   }
+}
+
+class VistaNotas extends StatefulWidget {
+  const VistaNotas({super.key});
+
+  @override
+  State<VistaNotas> createState() => _VistaNotasState();
+}
+
+enum MenuDeAccion { salir }
+
+class _VistaNotasState extends State<VistaNotas> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Tus Equipos"),
+      actions: [
+        PopupMenuButton<MenuDeAccion> (
+          onSelected: (value) async {
+            switch (value) {
+              case MenuDeAccion.salir:
+                final deberiaSalir = await mostrarDialogoSalir(context);
+
+                if (deberiaSalir) {
+                  FirebaseAuth.instance.signOut();
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/login/', (route) => false);
+                } 
+                break;
+              default:
+            }
+          },
+        itemBuilder: (context){
+          return const[
+         PopupMenuItem<MenuDeAccion>
+         (value: MenuDeAccion.salir,
+          child: Text('Salir'),)
+      ];},
+        
+        )
+      ],
+      ),
+    body: const Text("Primera Nota"),
+
+    );
+  }
+}
+
+
+Future<bool> mostrarDialogoSalir(BuildContext context){
+  return showDialog<bool>(
+    context: context,
+     builder: (context){
+      return AlertDialog(
+        title: const Text("Salir"),
+        content: const Text("Esta seguro de salir"),
+        actions: [
+          TextButton(onPressed: (){
+            Navigator.of(context).pop(false);
+          }, 
+          child: const Text('Cancelar')),
+          
+          TextButton(onPressed: (){
+             Navigator.of(context).pop(true);
+          }, 
+          child: const Text('Salir')),
+          
+        ],
+      );
+     },
+     ).then((value) => value ?? false);
 }
