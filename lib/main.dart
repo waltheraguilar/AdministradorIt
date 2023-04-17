@@ -33,6 +33,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:itadministrador/constantes/rutas.dart';
 import 'package:itadministrador/responsive/login_mobile.dart';
 import 'package:itadministrador/responsive/register_mobile.dart';
 import 'package:itadministrador/responsive/verificar_email.dart';
@@ -50,9 +51,9 @@ void main() {
       ),
       home: const HomePage(),
       routes: {
-        '/login/':(context)=>const LoginView(),
-        '/register/':(context)=>const RegisterView(),
-        '/notas/':(context) => const VistaNotas(),
+        rutaLogin:(context)=>const LoginView(),
+        rutaRegistrar:(context)=>const RegisterView(),
+        rutaNotas :(context) => const VistaNotas(),
 
 
 
@@ -120,7 +121,7 @@ class _VistaNotasState extends State<VistaNotas> {
                   FirebaseAuth.instance.signOut();
                   // ignore: use_build_context_synchronously
                   Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/login/', (route) => false);
+                    rutaLogin, (route) => false);
                 } 
                 break;
               default:
