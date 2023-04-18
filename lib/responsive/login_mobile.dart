@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:itadministrador/constantes/rutas.dart';
@@ -59,15 +61,23 @@ class _LoginViewState extends State<LoginView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                final userCredential = await FirebaseAuth.instance
+                await FirebaseAuth.instance
                     .signInWithEmailAndPassword(
                         email: email, password: password);
-
-                // ignore: use_build_context_synchronously
-                Navigator.of(context).pushNamedAndRemoveUntil(
+                  final user = FirebaseAuth.instance.currentUser;
+                  if(user?.emailVerified ?? false){
+                     Navigator.of(context).pushNamedAndRemoveUntil(
                   rutaNotas,
                   (route) => false,
                 );
+                  } else {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                  rutaVerificarEmail,
+                  (route) => false,
+                );
+                  }
+                // ignore: use_build_context_synchronously
+               
               } on FirebaseAuthException catch (a) {
                 //verificamos si el error es de firebase autenticacion
                 if (a.code == 'user-not-found') {
