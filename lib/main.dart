@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:itadministrador/constantes/rutas.dart';
 import 'package:itadministrador/responsive/login_mobile.dart';
