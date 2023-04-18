@@ -29,14 +29,15 @@ class MyApp extends StatelessWidget {
 
 }*/
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 
 import 'package:flutter/material.dart';
 import 'package:itadministrador/constantes/rutas.dart';
 import 'package:itadministrador/responsive/login_mobile.dart';
 import 'package:itadministrador/responsive/register_mobile.dart';
 import 'package:itadministrador/responsive/verificar_email.dart';
+import 'package:itadministrador/servicios/autenticacion/auth_servicio.dart';
+import 'package:itadministrador/views/vista_equipo.dart';
 
 
 import 'firebase_options.dart';
@@ -69,15 +70,13 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
-        ),
+        future: AuthServicio.firebase().initialize(),
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-             final user = FirebaseAuth.instance.currentUser;
+             final user = AuthServicio.firebase().currentUser;
              if(user != null){
-                if (user.emailVerified) {
+                if (user.esEmailVerificado) {
                 return const VistaNotas();
                 }else{
                        
@@ -96,75 +95,4 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class VistaNotas extends StatefulWidget {
-  const VistaNotas({super.key});
 
-  @override
-  State<VistaNotas> createState() => _VistaNotasState();
-}
-
-enum MenuDeAccion { salir }
-
-class _VistaNotasState extends State<VistaNotas> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Tus Equipos"),
-      actions: [
-        PopupMenuButton<MenuDeAccion> (
-          onSelected: (value) async {
-            switch (value) {
-              case MenuDeAccion.salir:
-                final deberiaSalir = await mostrarDialogoSalir(context);
-
-                if (deberiaSalir) {
-                  FirebaseAuth.instance.signOut();
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    rutaLogin, (route) => false);
-                } 
-                break;
-              default:
-            }
-          },
-        itemBuilder: (context){
-          return const[
-         PopupMenuItem<MenuDeAccion>
-         (value: MenuDeAccion.salir,
-          child: Text('Salir'),)
-      ];},
-        
-        )
-      ],
-      ),
-    body: const Text("Primera Nota"),
-
-    );
-  }
-}
-
-
-Future<bool> mostrarDialogoSalir(BuildContext context){
-  return showDialog<bool>(
-    context: context,
-     builder: (context){
-      return AlertDialog(
-        title: const Text("Salir"),
-        content: const Text("Esta seguro de salir"),
-        actions: [
-          TextButton(onPressed: (){
-            Navigator.of(context).pop(false);
-          }, 
-          child: const Text('Cancelar')),
-          
-          TextButton(onPressed: (){
-             Navigator.of(context).pop(true);
-          }, 
-          child: const Text('Salir')),
-          
-        ],
-      );
-     },
-     ).then((value) => value ?? false);
-}

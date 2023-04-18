@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:itadministrador/constantes/rutas.dart';
+import 'package:itadministrador/servicios/autenticacion/auth_excepciones.dart';
+import 'package:itadministrador/servicios/autenticacion/auth_servicio.dart';
 // ignore: unused_import
-import 'package:itadministrador/firebase_options.dart';
+
 import 'package:itadministrador/utilities/dialogo_de_errores.dart';
 
 class RegisterView extends StatefulWidget {
@@ -61,25 +63,28 @@ class _RegisterViewState extends State<RegisterView> {
                         final email = _email.text;
                         final password = _password.text;
                         try {
-                         await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                                  email: email, password: password);
-                        final user = FirebaseAuth.instance.currentUser;
-                        user?.sendEmailVerification();
+                         AuthServicio.firebase().crearUsuario(
+                          email: email, password: password);
+                        AuthServicio.firebase().enviarEmailDeVerificacion();
                         Navigator.of(context).pushNamed(rutaVerificarEmail) ; 
-                        } on FirebaseAuthException catch (e) {
-                         if (e.code=='weak-password') {
-                           await mostraDialogoError(context, "Contraseña debil");
-                         } else if(e.code=='email-already-in-use'){
-                           await mostraDialogoError(context, "El email ya esta en uso");
-                         }else if(e.code=='invalid-email'){
-                            await mostraDialogoError(context, "El email es invalido");
-                         } else {
-                          await mostraDialogoError(context, 'Error:${e.code}');
-                         }
-                        } catch (e){
-                          await mostraDialogoError(context, e.toString());
+                        } 
+                        on ContrasenaDebilAuthExcepcion{
+                            await mostraDialogoError(context, "Contraseña debil");
                         }
+                        
+                        on EmailYaEstaEnUsoAuthExcepcion {
+                            await mostraDialogoError(context, "El email ya esta en uso");
+                        }
+                        
+
+                        on EmailInvalidoExcepcion{
+                          await mostraDialogoError(context, "El email es invalido");
+                        }
+
+                        on GenericaAuthExcepcion {
+                          await mostraDialogoError(context, 'Error al registrar');
+                        }
+                        
                       },
                       child: const Text('Register'),
                     ),

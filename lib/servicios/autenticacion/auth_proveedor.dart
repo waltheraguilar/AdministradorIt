@@ -1,6 +1,8 @@
 import 'package:itadministrador/servicios/autenticacion/auth_usuario.dart';
 
 abstract class AuthProveedor{
+
+  Future<void> initialize();
   AuthUsuario? get currentUser;
 
   Future<AuthUsuario?> logIn({

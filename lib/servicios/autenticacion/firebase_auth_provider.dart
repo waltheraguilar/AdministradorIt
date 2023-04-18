@@ -1,8 +1,11 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:itadministrador/servicios/autenticacion/auth_usuario.dart';
 import 'package:itadministrador/servicios/autenticacion/auth_proveedor.dart';
 import 'package:itadministrador/servicios/autenticacion/auth_excepciones.dart';
 
 import 'package:firebase_auth/firebase_auth.dart' show FirebaseAuth, FirebaseAuthException;
+
+import '../../firebase_options.dart';
 
 class FirebaseAuthProvider implements AuthProveedor {
   @override
@@ -96,6 +99,13 @@ class FirebaseAuthProvider implements AuthProveedor {
          } else {
           throw UsuarioNoLogueadoAuthExcepcion();
          }
+  }
+  
+  @override
+  Future<void> initialize() async{
+    await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
   }
 
 }

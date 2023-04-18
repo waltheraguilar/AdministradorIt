@@ -1,8 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:itadministrador/constantes/rutas.dart';
+import 'package:itadministrador/servicios/autenticacion/auth_excepciones.dart';
+import 'package:itadministrador/servicios/autenticacion/auth_servicio.dart';
 import 'package:itadministrador/utilities/dialogo_de_errores.dart';
 
 class LoginView extends StatefulWidget {
@@ -61,11 +63,10 @@ class _LoginViewState extends State<LoginView> {
               final email = _email.text;
               final password = _password.text;
               try {
-                await FirebaseAuth.instance
-                    .signInWithEmailAndPassword(
-                        email: email, password: password);
-                  final user = FirebaseAuth.instance.currentUser;
-                  if(user?.emailVerified ?? false){
+               AuthServicio.firebase().logIn(
+                  email: email, password: password);
+                  final user = AuthServicio.firebase().currentUser;
+                  if(user?.esEmailVerificado?? false){
                      Navigator.of(context).pushNamedAndRemoveUntil(
                   rutaNotas,
                   (route) => false,
@@ -76,19 +77,19 @@ class _LoginViewState extends State<LoginView> {
                   (route) => false,
                 );
                   }
-                // ignore: use_build_context_synchronously
+            
                
-              } on FirebaseAuthException catch (a) {
-                //verificamos si el error es de firebase autenticacion
-                if (a.code == 'user-not-found') {
-                  await mostraDialogoError(context, 'Usuario no encontrado');
-                } else if (a.code == 'wrong-password') {
-                   await mostraDialogoError(context, 'Credenciales Incorrectas');
-                } else {
-                   await mostraDialogoError(context, 'Error:${a.code}');
-                }
-              } catch(e){
-                await mostraDialogoError(context, e.toString()); 
+              } 
+              on UsuarioAuthNoEcontrado{
+                 await mostraDialogoError(context, 'Usuario no encontrado');
+              }
+
+              on MalaContrasenaAuthException{
+                 await mostraDialogoError(context, 'Credenciales Incorrectas');
+              }
+
+              on GenericaAuthExcepcion {
+                   await mostraDialogoError(context, 'Error de Autenticacion');
               }
             },
             child: const Text('Login'),
