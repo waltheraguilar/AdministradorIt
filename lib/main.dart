@@ -54,6 +54,7 @@ void main() {
         rutaLogin:(context)=>const LoginView(),
         rutaRegistrar:(context)=>const RegisterView(),
         rutaNotas :(context) => const VistaNotas(),
+        rutaVerificarEmail :(context) => const VerifyEmailView() 
 
 
 
