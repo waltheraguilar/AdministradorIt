@@ -37,6 +37,8 @@ import 'package:itadministrador/responsive/login_mobile.dart';
 import 'package:itadministrador/responsive/register_mobile.dart';
 import 'package:itadministrador/responsive/verificar_email.dart';
 import 'package:itadministrador/servicios/autenticacion/auth_servicio.dart';
+import 'package:itadministrador/views/crear_actualizar.dart';
+import 'package:itadministrador/views/login_general.dart';
 import 'package:itadministrador/views/vista_equipo.dart';
 
 
@@ -46,19 +48,17 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      title: 'Administrador IT',
+      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
       home: const HomePage(),
       routes: {
-        rutaLogin:(context)=>const LoginView(),
-        rutaRegistrar:(context)=>const RegisterView(),
-        rutaNotas :(context) => const VistaNotas(),
-        rutaVerificarEmail :(context) => const VerifyEmailView() 
-
-
-
+        rutaLogin: (context) => const LoginVista(),
+        rutaRegistrar: (context) => const RegisterView(),
+        rutaNotas: (context) => const NotesView(),
+        rutaVerificarEmail:(context) => const VerifyEmailView(),
+        rutaCrearOEliminar:(context)=> const CreateUpdateNoteView(),
       },
     ),
   );
@@ -69,30 +69,28 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  FutureBuilder(
-        future: AuthServicio.firebase().initialize(),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-             final user = AuthServicio.firebase().currentUser;
-             if(user != null){
-                if (user.esEmailVerificado) {
-                return const VistaNotas();
-                }else{
-                       
-                 return const VerifyEmailView();
-           
-                }
-             }else{
-                   return const LoginView();
-             }
+    return FutureBuilder(
+      future: AuthServicio.firebase().initialize(),
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.done:
+            final user = AuthServicio.firebase().currentUser;
+            if (user != null) {
+              if (user.isEmailVerified) {
             
-            default:
-              return const CircularProgressIndicator();
-          }
-        },
-      );
+                return const NotesView();
+              } else {
+                return const NotesView();
+              }
+            } else {
+              return const LoginView();
+            }
+
+          default:
+            return const CircularProgressIndicator();
+        }
+      },
+    );
   }
 }
-
 

@@ -68,7 +68,7 @@ class FirebaseAuthProvider implements AuthProveedor {
     {required String email, required String password}) async {
     
     try {
-      FirebaseAuth.instance.signInWithEmailAndPassword(
+   await  FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email, 
         password: password);
 

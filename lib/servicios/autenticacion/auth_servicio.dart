@@ -33,8 +33,8 @@ class AuthServicio implements AuthProveedor{
   Future<void> logOut() =>
     proveedor.logOut();
     
-      @override
-      Future<void> initialize()async  => proveedor.currentUser;
+ @override
+ Future<void> initialize()  => proveedor.initialize();
   
 
 } 

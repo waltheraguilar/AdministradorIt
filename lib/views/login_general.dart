@@ -1,25 +1,22 @@
-// ignore_for_file: use_build_context_synchronously
-
-
 import 'package:flutter/material.dart';
 import 'package:itadministrador/constantes/rutas.dart';
 import 'package:itadministrador/servicios/autenticacion/auth_excepciones.dart';
 import 'package:itadministrador/servicios/autenticacion/auth_servicio.dart';
 import 'package:itadministrador/utilities/dialogo_de_errores.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({Key? key}) : super(key: key);
+
+class LoginVista extends StatefulWidget {
+  const LoginVista({Key? key}) : super(key: key);
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<LoginVista> createState() => _LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _LoginViewState extends State<LoginVista> {
   late final TextEditingController _email;
   late final TextEditingController _password;
   @override
   void initState() {
-    // TODO: implement initState
     _email = TextEditingController();
     _password = TextEditingController();
     super.initState();
@@ -36,7 +33,7 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Login'),
+        title: const Text('Bienvenido'),
       ),
       body: Column(
         children: [
@@ -63,34 +60,41 @@ class _LoginViewState extends State<LoginView> {
               final email = _email.text;
               final password = _password.text;
               try {
-               AuthServicio.firebase().logIn(
-                  email: email, password: password);
-                  final user = AuthServicio.firebase().currentUser;
-                  if(user?.isEmailVerified ?? false){
-                     Navigator.of(context).pushNamedAndRemoveUntil(
-                  rutaNotas,
-                  (route) => false,
+                await AuthServicio.firebase().logIn(
+                  email: email,
+                  password: password,
                 );
-                  } else {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                  rutaVerificarEmail,
-                  (route) => false,
+                final user = AuthServicio.firebase().currentUser;
+
+                if (user?.isEmailVerified ?? false) {
+                  //is verify
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil(rutaNotas, (route) => false);
+                } else {
+//not verify
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      rutaVerificarEmail, (route) => false);
+                }
+                // ignore: use_build_context_synchronously
+
+              } on UsuarioAuthNoEcontrado {
+                await mostraDialogoError(
+                  context,
+                  'User not found ;(',
                 );
-                  }
-            
-               
-              } 
-              on UsuarioAuthNoEcontrado{
-                 await mostraDialogoError(context, 'Usuario no encontrado');
+              } on MalaContrasenaAuthException{
+                  await mostraDialogoError(
+                    context,
+                    'Wrong Credentials',
+                  );
+              } on GenericaAuthExcepcion{
+                   await mostraDialogoError(
+                  context,
+                'Authentication Error ;(',
+                );
               }
-
-              on MalaContrasenaAuthException{
-                 await mostraDialogoError(context, 'Credenciales Incorrectas');
-              }
-
-              on GenericaAuthExcepcion {
-                   await mostraDialogoError(context, 'Error de Autenticacion');
-              }
+         
             },
             child: const Text('Login'),
           ),
@@ -106,5 +110,3 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-
-
