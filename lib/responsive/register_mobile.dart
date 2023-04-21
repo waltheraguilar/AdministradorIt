@@ -66,7 +66,7 @@ class _RegisterViewState extends State<RegisterView> {
                          AuthServicio.firebase().crearUsuario(
                           email: email, password: password);
                         AuthServicio.firebase().enviarEmailDeVerificacion();
-                        Navigator.of(context).pushNamed(rutaVerificarEmail) ; 
+                       // Navigator.of(context).pushNamed(rutaVerificarEmail) ; 
                         } 
                         on ContrasenaDebilAuthExcepcion{
                             await mostraDialogoError(context, "Contraseña debil");

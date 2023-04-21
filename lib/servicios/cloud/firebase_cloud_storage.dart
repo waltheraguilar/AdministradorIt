@@ -5,45 +5,42 @@ import 'package:itadministrador/servicios/cloud/cloud_note.dart';
 
 class FirebaseCloudStorage {
   final equipos = FirebaseFirestore.instance.collection("equipos");
-  
+
   Future<void> deleteNote({required String documentId}) async {
     try {
-       
-       await equipos.doc(documentId).delete();
-
-
+      await equipos.doc(documentId).delete();
     } catch (e) {
       throw CouldNotDeleteNoteException();
     }
   }
 
-
-  Future<void> updateEquipos(
-      {required String documentId,
-      required String codigoDelEquipo,
-      required String descripcionDelEquipo,
-      required String fechaAdquisicion,
-      required String fechaInstalacion,
-      required String informacionExtra,
-      required String modeloEquipo,
-      required String nombreEquipo,
-      required String passwordAdministrador,
-      required String tipoEquipo,
-      required String ubicacion,
-      required String usuarioAdministrado}) async {
+  Future<void> updateEquipos({
+    required String documentId,
+    required String nombreEquipo,
+    required String modeloEquipo,
+    required String codigoDelEquipo,
+    required String usuarioAdministrado,
+    required String passwordAdministrador,
+    required String ubicacion,
+    required String tipoEquipo,
+    required String fechaAdquisicion,
+    required String informacionExtra,
+    required String fechaInstalacion,
+    required String descripcionDelEquipo,
+  }) async {
     try {
       equipos.doc(documentId).update({
-      codigoDelEquipoConst :codigoDelEquipo,
-      descripcionDelEquipoConst : descripcionDelEquipo,
-      fechaAdquisicionConst : fechaAdquisicion,
-      fechaInstalacionConst  : fechaInstalacion,
-      informacionExtraConst : informacionExtra,
-      modeloEquipoConst : modeloEquipoConst,
-      nombreEquipoConst : nombreEquipoConst, 
-      passwordAdministradorConst : passwordAdministradorConst,
-      tipoEquipoConst : tipoEquipoConst,
-      ubicacionConst : ubicacionConst,
-      usuarioAdministradorConst : usuarioAdministradorConst
+        nombreEquipoConst: nombreEquipo,
+        modeloEquipoConst: modeloEquipo,
+        codigoDelEquipoConst: codigoDelEquipo,
+        usuarioAdministradorConst: usuarioAdministrado,
+        passwordAdministradorConst: passwordAdministrador,
+        ubicacionConst: ubicacion,
+        tipoEquipoConst: tipoEquipo,
+        fechaAdquisicionConst: fechaAdquisicion,
+        informacionExtraConst: informacionExtra,
+        fechaInstalacionConst: fechaInstalacion,
+        descripcionDelEquipoConst: descripcionDelEquipo,
       });
     } catch (e) {
       throw CouldNotUpdateNoteException();
@@ -60,35 +57,16 @@ class FirebaseCloudStorage {
       return await equipos
           .where(userIdConst, isEqualTo: userId)
           .get()
-          .then((value) => value.docs.map((doc) {
-                return CloudNote(
-                    documentId: doc.id,
-                    codigoDelEquipo: doc.data()[userIdConst] as String,
-                    descripcionDelEquipo:
-                        doc.data()[descripcionDelEquipoConst] as String,
-                    fechaAdquisicion:
-                        doc.data()[fechaAdquisicionConst] as String,
-                    fechaInstalacion:
-                        doc.data()[fechaInstalacionConst] as String,
-                    informacionExtra:
-                        doc.data()[informacionExtraConst] as String,
-                    modeloEquipo: doc.data()[modeloEquipoConst] as String,
-                    nombreEquipo: doc.data()[nombreEquipoConst] as String,
-                    passwordAdministrador:
-                        doc.data()[passwordAdministradorConst] as String,
-                    tipoEquipo: doc.data()[tipoEquipoConst] as String,
-                    ubicacion: doc.data()[ubicacionConst] as String,
-                    usuarioAdministrador:
-                        doc.data()[usuarioAdministradorConst] as String,
-                    userId: userId);
-              }));
+          .then((value) => value.docs.map(
+                (doc) => CloudNote.fromSnapshot(doc),
+              ));
     } catch (e) {
       throw CouldNotGetAllNotesException();
     }
   }
 
-  void createNuevoEquipo({required String userId}) async {
-    await equipos.add({
+  Future<CloudNote> createNuevoEquipo({required String userId}) async {
+    final document = await equipos.add({
       userIdConst: userId,
       codigoDelEquipoConst: "",
       descripcionDelEquipoConst: "",
@@ -102,6 +80,21 @@ class FirebaseCloudStorage {
       ubicacionConst: "",
       usuarioAdministradorConst: "",
     });
+    final fetchequipos = await document.get();
+    return CloudNote(
+        documentId: fetchequipos.id,
+        codigoDelEquipo: " ",
+        descripcionDelEquipo: '',
+        fechaAdquisicion: '',
+        fechaInstalacion: '',
+        informacionExtra: '',
+        modeloEquipo: '',
+        nombreEquipo: '',
+        passwordAdministrador: '',
+        tipoEquipo: '',
+        ubicacion: '',
+        usuarioAdministrador: '',
+        userId: userId);
   }
 
   static final FirebaseCloudStorage _shared =

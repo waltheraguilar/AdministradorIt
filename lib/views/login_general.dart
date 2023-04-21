@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:itadministrador/constantes/rutas.dart';
 import 'package:itadministrador/servicios/autenticacion/auth_excepciones.dart';
@@ -33,79 +35,84 @@ class _LoginViewState extends State<LoginVista> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bienvenido'),
+        title: const Padding(
+          padding: const EdgeInsets.all( 12.0),
+          child: const Text('Bienvenido'),
+        ),
       ),
-      body: Column(
-        children: [
-          TextField(
-            controller: _email,
-            enableSuggestions: false,
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              hintText: "Ingresa Tu Correo",
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _email,
+              enableSuggestions: false,
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                hintText: "Ingresa Tu Correo",
+              ),
             ),
-          ),
-          TextField(
-            controller: _password,
-            obscureText: true,
-            enableSuggestions: false,
-            autocorrect: false,
-            decoration: const InputDecoration(
-              hintText: "Ingresa Tu Contraseña",
+            TextField(
+              controller: _password,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: const InputDecoration(
+                hintText: "Ingresa Tu Contraseña",
+              ),
             ),
-          ),
-          TextButton(
-            onPressed: () async {
-              final email = _email.text;
-              final password = _password.text;
-              try {
-                await AuthServicio.firebase().logIn(
-                  email: email,
-                  password: password,
-                );
-                final user = AuthServicio.firebase().currentUser;
+            TextButton(
+              onPressed: () async {
+                final email = _email.text;
+                final password = _password.text;
+                try {
+                  await AuthServicio.firebase().logIn(
+                    email: email,
+                    password: password,
+                  );
+                  final user = AuthServicio.firebase().currentUser;
 
-                if (user?.isEmailVerified ?? false) {
-                  //is verify
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(rutaNotas, (route) => false);
-                } else {
+            
+                  if (user?.isEmailVerified ?? false) {
+          
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil(rutaNotas, (route) => false);
+                  } else {
 //not verify
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                      rutaVerificarEmail, (route) => false);
-                }
-                // ignore: use_build_context_synchronously
+                  }
+                  // ignore: use_build_context_synchronously
 
-              } on UsuarioAuthNoEcontrado {
-                await mostraDialogoError(
-                  context,
-                  'User not found ;(',
-                );
-              } on MalaContrasenaAuthException{
+                } on UsuarioAuthNoEcontrado {
                   await mostraDialogoError(
                     context,
-                    'Wrong Credentials',
+                    'Usuario No Encontrados',
                   );
-              } on GenericaAuthExcepcion{
-                   await mostraDialogoError(
-                  context,
-                'Authentication Error ;(',
-                );
-              }
-         
-            },
-            child: const Text('Login'),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context)
-                  .pushNamedAndRemoveUntil(rutaRegistrar, (route) => false);
-            },
-            child: const Text("Not Registered YET? Register Here!"),
-          ),
-        ],
+                } on MalaContrasenaAuthException{
+                    await mostraDialogoError(
+                      context,
+                      'Credenciales Invalidas',
+                    );
+                } on GenericaAuthExcepcion{
+                     await mostraDialogoError(
+                    context,
+                  'Algo algo salio ;(',
+                  );
+                }
+           
+              },
+              child: const Text('Login'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil(rutaRegistrar, (route) => false);
+              },
+              child: const Text("Registrar"),
+            ),
+          ],
+        ),
       ),
     );
   }

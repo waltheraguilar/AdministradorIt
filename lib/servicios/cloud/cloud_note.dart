@@ -50,17 +50,25 @@ required       this.usuarioAdministrador,
 
 CloudNote.fromSnapshot(QueryDocumentSnapshot<Map<String, dynamic>> snapshot) :
  documentId = snapshot.id,
+ nombreEquipo = snapshot.data()[nombreEquipoConst] as String,
+ modeloEquipo = snapshot.data()[modeloEquipoConst] as String,
  codigoDelEquipo = snapshot.data()[codigoDelEquipoConst] as String,
- descripcionDelEquipo = snapshot.data()[descripcionDelEquipoConst] as String,
- fechaAdquisicion = snapshot.data()[fechaAdquisicionConst] as String,
-fechaInstalacion = snapshot.data()[fechaInstalacionConst] as String,
-informacionExtra = snapshot.data()[informacionExtraConst] as String,
-modeloEquipo = snapshot.data()[modeloEquipoConst] as String,
-nombreEquipo = snapshot.data()[nombreEquipoConst] as String,
+ usuarioAdministrador = snapshot.data()[usuarioAdministradorConst] as String,
+
 passwordAdministrador = snapshot.data()[passwordAdministradorConst] as String,
-tipoEquipo = snapshot.data()[tipoEquipoConst] as String,
 ubicacion = snapshot.data()[ubicacionConst] as String, 
-usuarioAdministrador = snapshot.data()[usuarioAdministradorConst] as String,
+tipoEquipo = snapshot.data()[tipoEquipoConst] as String,
+ fechaAdquisicion = snapshot.data()[fechaAdquisicionConst] as String,
+ informacionExtra = snapshot.data()[informacionExtraConst] as String,
+ fechaInstalacion = snapshot.data()[fechaInstalacionConst] as String,
+ descripcionDelEquipo = snapshot.data()[descripcionDelEquipoConst] as String,
+
+
+
+
+
+
+
 
 userId = snapshot.data()[userIdConst];
 }

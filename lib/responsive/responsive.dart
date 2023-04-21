@@ -6,7 +6,7 @@ class ResponsiveLayout extends StatelessWidget {
   final Widget desktopScaffold;
 
 
-  ResponsiveLayout({
+  const ResponsiveLayout({
     required this.desktopScaffold,
     required this.mobileScaffold,
     required this.tabletScaffold,

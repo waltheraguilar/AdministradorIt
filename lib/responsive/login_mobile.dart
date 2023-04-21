@@ -40,22 +40,28 @@ class _LoginViewState extends State<LoginView> {
       ),
       body: Column(
         children: [
-          TextField(
-            controller: _email,
-            enableSuggestions: false,
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              hintText: "Ingresa Tu Correo",
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: TextField(
+              controller: _email,
+              enableSuggestions: false,
+              autocorrect: false,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                hintText: "Ingresa Tu Correo",
+              ),
             ),
           ),
-          TextField(
-            controller: _password,
-            obscureText: true,
-            enableSuggestions: false,
-            autocorrect: false,
-            decoration: const InputDecoration(
-              hintText: "Ingresa Tu Contraseña",
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: TextField(
+              controller: _password,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
+              decoration: const InputDecoration(
+                hintText: "Ingresa Tu Contraseña",
+              ),
             ),
           ),
           TextButton(
@@ -72,10 +78,7 @@ class _LoginViewState extends State<LoginView> {
                   (route) => false,
                 );
                   } else {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                  rutaVerificarEmail,
-                  (route) => false,
-                );
+                     await mostraDialogoError(context, 'Error de Autenticacion');
                   }
             
                
@@ -99,7 +102,7 @@ class _LoginViewState extends State<LoginView> {
               Navigator.of(context)
                   .pushNamedAndRemoveUntil(rutaRegistrar, (route) => false);
             },
-            child: const Text("Not Registered YET? Register Here!"),
+            child: const Text("Registrar"),
           ),
         ],
       ),

@@ -1,5 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:itadministrador/firebase_options.dart';
+
 import 'package:itadministrador/servicios/autenticacion/auth_proveedor.dart';
 import 'package:itadministrador/servicios/autenticacion/auth_usuario.dart';
 import 'package:itadministrador/servicios/autenticacion/firebase_auth_provider.dart';

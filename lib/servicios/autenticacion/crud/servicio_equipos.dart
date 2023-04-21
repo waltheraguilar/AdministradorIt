@@ -338,7 +338,14 @@ CREATE TABLE IF NOT EXISTS "user"  (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
    '''; */
-
+/////////////////////////////////
+///
+///
+///
+///
+///
+///
+/*
 
    import 'dart:async';
 
@@ -705,3 +712,5 @@ CREATE TABLE IF NOT EXISTS "user"  (
 	PRIMARY KEY("id" AUTOINCREMENT)
 );
    ''';
+
+   */

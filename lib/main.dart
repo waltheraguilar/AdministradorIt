@@ -42,7 +42,6 @@ import 'package:itadministrador/views/login_general.dart';
 import 'package:itadministrador/views/vista_equipo.dart';
 
 
-import 'firebase_options.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,7 +56,7 @@ void main() {
         rutaLogin: (context) => const LoginVista(),
         rutaRegistrar: (context) => const RegisterView(),
         rutaNotas: (context) => const NotesView(),
-        rutaVerificarEmail:(context) => const VerifyEmailView(),
+      //  rutaVerificarEmail:(context) => const VerifyEmailView(),
         rutaCrearOEliminar:(context)=> const CreateUpdateNoteView(),
       },
     ),
