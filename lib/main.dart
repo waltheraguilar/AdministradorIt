@@ -46,7 +46,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Administración de equipos IT',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
