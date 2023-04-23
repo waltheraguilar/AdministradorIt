@@ -52,6 +52,12 @@ class FirebaseCloudStorage {
           .map((doc) => CloudNote.fromSnapshot(doc))
           .where((equipos) => equipos.userId == userId));
 
+ Stream<Iterable<CloudNote>> todosEquiposFiltrador({required String userId, required String text}) =>
+      equipos.snapshots().map((event) => event.docs
+          .map((doc) => CloudNote.fromSnapshot(doc))
+          .where((equipos) => equipos.userId == userId && equipos.nombreEquipo.toLowerCase().contains(text.toLowerCase())));
+
+
   Future<Iterable<CloudNote>> obtenerEquipos({required String userId}) async {
     try {
       return await equipos

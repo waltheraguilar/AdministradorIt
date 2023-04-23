@@ -35,7 +35,6 @@ import 'package:flutter/material.dart';
 import 'package:itadministrador/constantes/rutas.dart';
 import 'package:itadministrador/responsive/login_mobile.dart';
 import 'package:itadministrador/responsive/register_mobile.dart';
-import 'package:itadministrador/responsive/verificar_email.dart';
 import 'package:itadministrador/servicios/autenticacion/auth_servicio.dart';
 import 'package:itadministrador/views/crear_actualizar.dart';
 import 'package:itadministrador/views/login_general.dart';

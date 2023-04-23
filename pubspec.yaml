@@ -44,6 +44,7 @@ dependencies:
   path: ^1.8.2
   sqflite: ^2.2.6
   flutter_holo_date_picker: ^1.1.0
+  share_plus: ^6.3.2
 
 dev_dependencies:
   flutter_test:
